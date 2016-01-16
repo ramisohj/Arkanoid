@@ -250,6 +250,7 @@ public class Block {
     }
     
     //CRASH MAIN METHOD !!!!! 
+    
     public void blockCrash(Ball ball){
         if(ball.getDY()>=0){
             crashTopToDown(ball);
@@ -301,7 +302,7 @@ public class Block {
                 (xp2>=sideX1 && xp2<= sideX2 ) ){
                 ball.setDY(ball.getDY()*-1);
                 ball.setAllFirst();
-                sound.crash();
+                //sound.crash();//DOBLE COLISION !!!!!!!!!!!!!
                 if(!isForEver){
                     isDead = true;
                 } 
