@@ -28,6 +28,7 @@ public class Ship extends Block{
         gunList = new ArrayList<Gun>();
         movNave = new ArrayDeque<Integer>();
         sound = new Sound();
+        updatePoints();
     }
     
     public void addMove(KeyEvent e){
@@ -53,22 +54,29 @@ public class Ship extends Block{
             //s.move();
             //System.out.println("\n");
             int key = movNave.poll();
+            int xp ;//x position 
             if(key == KeyEvent.VK_RIGHT){
-                setX(getX()+15);
+                xp = getX()+5;
+                if(!(xp>=880)){
+                    setX(xp);
+                }
                 //System.out.println("-------------------------------RIGHT-------------------------");
             }else
             if(key == KeyEvent.VK_LEFT){             
-                setX(getX()-15);
+            xp = getX()-5;
+                if(!(xp<=25)){
+                    setX(xp);
+                }
                 //System.out.println("-------------------------------LEFT-------------------------");
             }else   
-            if(key == KeyEvent.VK_UP){
-                setY(getY()-15);
+            //if(key == KeyEvent.VK_UP){
+            //    setY(getY()-15);
                 //System.out.println("-------------------------------UP-------------------------");
-            }else
-            if(key == KeyEvent.VK_DOWN){
-                setY(getY()+15);
+            //}else
+            //if(key == KeyEvent.VK_DOWN){
+                //setY(getY()+15);
                 //System.out.println("-------------------------------DOWN-------------------------");
-            }else
+            //}else
             if(key == KeyEvent.VK_SPACE){
                 atack(Color.cyan);
                 //System.out.println("-------------------------------ATACK-------------------------");
@@ -133,6 +141,8 @@ public class Ship extends Block{
     private int xn3;
     private int xn4;
     private int div;
+    
+    
     public void shipCrash( Ball ball){
          div = super.getWidht()/3;
          xn1 = super.getX();
@@ -140,11 +150,11 @@ public class Ship extends Block{
          xn3 = xn2+div;
          xn4 = xn3+div;
 
-        if(ball.getDY()>=0){
+        //if(ball.getDY()>=0){
             crashTopToDown(ball);
-        }else{
-            crashDownToTop(ball);
-        }
+        //}else{
+        //    crashDownToTop(ball);
+        //}
     }
     //TOP TO DOWN
     private void crashTopToDown(Ball ball){

@@ -79,8 +79,8 @@ public class Main extends JFrame{
     int min;
     public void run() {
         try{
-        ball = new Ball(10, 500, 500,-1,-1,Color.white);
-        ship = new Ship(500, 500, 120, 30, Color.cyan);
+        ball = new Ball(10, 500, 660,-1,-1,Color.white);
+        ship = new Ship(500, 685, 120, 30, Color.cyan);
         
         wall.fillBockList();
         wall.blockListUpdatepoints();
@@ -93,32 +93,33 @@ public class Main extends JFrame{
             try {
             //System.out.println("\n");    
             //graphDB.fillRect(0,0, width, height);
-            graphDB.clearRect(0,47, getWidth()-290, getHeight()-73);
+            graphDB.clearRect(26,47, getWidth()-326, getHeight()-72);
             
             //CRASHES
             
-            borderCrash(ball);
-            ship.shipCrash(ball);
-            wall.blockListCrashes(ball);
+            verifyCrashes();
+            //borderCrash(ball);
+            //ship.shipCrash(ball);
+            //wall.blockListCrashes(ball);
             
             //UPDATE ELEMENTS
             wall.blockListKill(ship);
             ball.wayCalculator();
+            wall.boomListUpdate();
             
             ship.move();
-            ship.updateGuns();        
-            ship.paintAllGuns(graphDB);
+            ship.updateGuns();          
             ship.updatePoints();//save ship points
             
             //PAINT ELEMENTS
+            ship.paintAllGuns(graphDB);
             ship.paintShip(graphDB);
             ball.paintBall(graphDB,ball.getRadio(), ball.getXC(), ball.getYC());  
             wall.paintBlockList(graphDB);
-            //--wall.painBlockMaze(graphDB);
-            
+            //--wall.painBlockMaze(graphDB); 
             //efects
             wall.boomEfect(graphDB);
-            wall.boomListUpdate();
+            
             
             repaint();
             sleep(5);
@@ -137,7 +138,18 @@ public class Main extends JFrame{
         paint(g);
     }
     private void verifyCrashes(){
+        borderCrash(ball);
         
+        //CRASHES TO THE SHIPBALL FALLING DOWN 
+        if((ball.getYC()+ball.getRadio())>=ship.sideY1 && ball.getDY()>=0){
+            ship.shipCrash(ball);
+        }
+        //CRASHES TO THE WALL  WITH BALL
+        boolean cmpSideY2 = (ball.getYC()-ball.getRadio())<=wall.sideY2 && ball.getDY()<=0;
+        boolean cmpSideY1 = (ball.getYC()+ball.getRadio())>=wall.sideY1 && ball.getDY()>=0;
+        if(cmpSideY1 || cmpSideY2){
+            wall.blockListCrashes(ball);
+        }
     }
     private void playMusic(){
         if(min >=11000){
@@ -153,10 +165,22 @@ public class Main extends JFrame{
     }
     public void margin(){
        graphDB.setColor(Color.blue);
-       graphDB.fillRect(1000,0,1300,800);//Menu Block
-       graphDB.fillRect(0,0,1000,47);//top
-       graphDB.fillRect(0,720,1000,744);//below
-      
+       graphDB.fillRect(1000,0,1300,800);//Menu Block, right side 
+       graphDB.fillRect(0,0,1000,46);//top
+       graphDB.fillRect(0,719,1000,744);//below
+       graphDB.fillRect(0,26,26,800);//left side 
+       Geometry.Line.midPointLine(1000,0, 1000, 800,graphDB, Color.red);//right Side
+       Geometry.Line.midPointLine(0,719, 1300, 719,graphDB, Color.red);//below
+       Geometry.Line.midPointLine(0,46, 1300, 46,graphDB, Color.red);//top
+       Geometry.Line.midPointLine(25,0,25,800,graphDB, Color.red);//leftSide
+   
+    
+    
+       Geometry.Line.midPointLine(wall.sideX1, 0, wall.sideX1,800, graphDB, Color.white);
+       Geometry.Line.midPointLine(0,wall.sideY1,1300,wall.sideY1, graphDB, Color.white);
+       Geometry.Line.midPointLine(wall.sideX2, 0, wall.sideX2,800, graphDB, Color.white);
+       Geometry.Line.midPointLine(0,wall.sideY2,1300,wall.sideY2, graphDB, Color.white);
+    
     }
     private void borderCrash(Ball ball){
         if(ball.getYC()<=57 && ball.getDY()<0){
@@ -164,17 +188,17 @@ public class Main extends JFrame{
             ball.setAllFirst();
             //sound.crash();
         }
-        if(ball.getYC() >= (height-37) && ball.getDY()>0){
+        if(ball.getYC() >= (height-36) && ball.getDY()>0){
             ball.setDY(ball.getDY()*-1);
             ball.setAllFirst();
             //sound.crash();
         }
-        if(ball.getXC() <= 8 && ball.getDX()<0){
+        if(ball.getXC() <= 36 && ball.getDX()<0){
             ball.setDX(ball.getDX()*-1);
             ball.setAllFirst();
             //sound.crash();
         }
-        if(ball.getXC() >=(width -9) && ball.getDX()>0){
+        if(ball.getXC() >=(width -11) && ball.getDX()>0){
             ball.setDX(ball.getDX()*-1);
             ball.setAllFirst();
             //sound.crash();

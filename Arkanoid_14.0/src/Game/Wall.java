@@ -13,10 +13,13 @@ import java.util.ArrayList;
  *
  * @author usuario
  */
-public class Wall {
+public class Wall{
     
     private ArrayList<ArrayList<Block>> blockList;
     private ArrayList<Block> boomList;
+    public int width;
+    public int height;
+    
     private Sound sound;
     public Wall(){
         blockList = new ArrayList<ArrayList<Block>>();
@@ -142,6 +145,15 @@ public class Wall {
                                 {1,1,1,2,2,1,2,1},
                                 {2,0,2,0,2,0,2,0},};
     
+    
+                        //                  sideY1
+    int sideX1 = 0;         //   (xo,yo) _______________________
+    int sideX2 = 0;         //          |                       |
+    int sideY1 = 0;         //  sideX1  |                       |sideX2
+    int sideY2 = 0;         //          |_______________________|
+                        //                  sideY2
+    
+    
     public void fillBockList(){
         fillBlockMaze(100, 300, 100, 20);
     }
@@ -150,12 +162,12 @@ public class Wall {
         int row = maze.length;
         int col = maze[0].length;
         int xStart = x0;
-        
-        
+        sideX1 = x0;
+        sideY1 = y0;
+        sideX2 = sideX1 + (w+2)*col+(w/2);
+        sideY2 = sideY1 + (h+2)*row;
         for(int i = 1;i<=row;i++){
-            
             ArrayList<Block> lb = new ArrayList<Block>();
-            
             for(int j = 0;j<col;j++){
                 Block b;
                 int num = maze[i-1][j];
@@ -172,16 +184,17 @@ public class Wall {
                 }    
                 }
                 x0+=w+2;
-            }
-            
+            } 
             blockList.add(lb); 
             y0+=h+2;
             if(i%2==0){
                 x0 = xStart;
             }else{
-                x0 = xStart+w/2;
+                x0 = xStart+w/2;//go to right ---->
             }
-            
-        }
+        } 
     }
+    
+    
+    
 }
